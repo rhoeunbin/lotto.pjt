@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트</title>
+  <style>
+    .lo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .button {
+      width: 2rem;
+      height: 3rem;
+    }
+    .ball {
+      display: inline-block;
+      width: 10rem;
+      height: 10rem;
+      margin: 1rem;
+      border-radius: 50%;
+      /* 컨텐츠 중앙, 수직 정렬 */
+      text-align: center;
+      line-height: 10rem;
+      /* 폰트 정리 */
+      font-size: xx-large;
+      font-weight: bold;
+    }
+    .ball-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+    .element.style {
+      justify-content: center;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="lo">
+    <h1>로또 추첨 번호</h1>
+    <button id="lotto-btn" style="background-color:rgb(253, 51, 179); border: none; width: 5rem; height: 3rem; margin-bottom: 1rem; border-radius: 1rem;"><b>번호 받기</b></button>
+    <button id="reset-btn" style="background-color:rgb(246, 173, 78); border: none; width: 5rem; height: 3rem; border-radius: 1rem;"><b>다시 뽑기</b></button>
+  </div>
+
+  <!-- cdn 가져오기, lodash를 불러온 곳에서만 사용 가능-->
+  <div id="result" style="display:flex; justify-content:center "></div>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script>
+    const button = document.querySelector('#lotto-btn')
+    button.addEventListener('click',function() {
+      // 컨테이너 만들기
+      for (let i=0; i<6; i++) {
+      const ballContainer = document.createElement('div')
+
+      ballContainer.classList.add('ball-container')
+      //공을 만들어서 => 6개
+      const numbers = _.sampleSize(_.range(1,46), 6)
+      console.log(numbers) // 서로 다른 숫자 가져오는 거 확인 가능
+
+      const ball =  document.createElement('div')
+      ball.classList.add('ball')
+      // 원이 하나씩 서로 다른 숫자로 나옴
+      ball.innerText = numbers[i]
+      // 컨테이너 붙이기
+      ballContainer.appendChild(ball)
+      
+      if (numbers[i] <= 10) {
+        ball.style.backgroundColor = 'yellow'
+      } else if (numbers[i] <= 20) {
+        ball.style.backgroundColor = 'blue'
+      } else if (numbers[i] <= 30) {
+        ball.style.backgroundColor = 'red'  
+      } else if (numbers[i] <= 40) {
+        ball.style.backgroundColor = 'grey'
+      } else {
+        ball.style.backgroundColor = 'green'
+      }
+      // console.log('번호 추첨')
+      const result = document.querySelector('#result')
+      result.appendChild(ballContainer)
+      const resetbtn = document.querySelector('#reset-btn')
+      resetbtn.addEventListener('click',function() {
+        result.removeChild(ballContainer)
+      }) 
+      }
+    });
+    // 사용해서 랜덤 추첨기 _.sampleSize(_.range(1,46), 6);
+    // _.sampleSize(_.range(1,46), 6).sort() => 무슨 기준으로 정렬하는지 찾기;
+  </script>
+
+</body>
+</html>
